@@ -1,14 +1,17 @@
 const { Point } = require('paper')
 
-const playerSpeed = 1
+const playerSpeed = 0.08
 const playerRotateSpeed = 1
 
 function tick(state, gameTime) {
-    // console.log(state.player1)
+    // console.log('time delta', gameTime - state.gameTime)
+    // console.log('starting player', state.player1)
     const player1 = moveAndRotate(state.player1, state.gameTime, gameTime)
     const player2 = moveAndRotate(state.player2, state.gameTime, gameTime)
     //move bullets
     //move asteroids
+    // console.log(player1.position)
+    // console.log('ending player', player1)
     return { ...state, gameTime, player1, player2 }
 }
 

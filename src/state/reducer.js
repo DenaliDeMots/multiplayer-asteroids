@@ -23,9 +23,10 @@ function reducer(state, action) {
 
 
 function updatePlayer(action, prop, value, state) {
-    const nextPlayer = updateProperty(getPlayer(action.player, state), prop, value)
     const updatedPositions = tick(state, action.atServerTime)
+    const nextPlayer = updateProperty(getPlayer(action.player, updatedPositions), prop, value)
     const updatedPlayer = updateProperty(updatedPositions, action.player, nextPlayer)
+    // console.log('old player: ', state.player1, 'new player: ', updatedPlayer.player1)
     return { ...updatedPlayer, action }
 }
 

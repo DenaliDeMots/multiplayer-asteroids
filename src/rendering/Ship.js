@@ -1,6 +1,4 @@
-function createShip(position, rotation) {
-    var x = 200;
-    var y = 200;
+function createShip({ x, y }, rotation) {
     var radius = 20;
     var angle = rotation - 30;
 
@@ -17,9 +15,10 @@ function createShip(position, rotation) {
         ],
         // selected: true
     })
+    ship.strokeColor = 'cyan';
+    ship.strokeWidth = 2;
+    ship.rotate(angle);
+    return ship
 }
 
-ship.strokeColor = 'cyan';
-ship.strokeWidth = 2;
-ship.rotate(angle);
-
+module.exports = createShip

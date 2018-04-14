@@ -5,17 +5,22 @@ const tick = require('./tick')
 
 
 
-function createGameController(player, socket, serverDelay, serverOffset) {
+function createGameController(player, socket, serverDelay, serverOffset, startingGameTime) {
+    console.log('sever delay: ', serverDelay, 'serverOffset: ', serverOffset)
     let actionID = 0
+    initialState.gameTime = startingGameTime
+    console.log('starting state', initialState)
     let history = [initialState]
 
     socket.on('action', (action) => {
         const currentTime = Date.now()
         if (action.player === player) {
-            serverDelay = (currentTime - serverOffset - action.atPlayerTime) / 2
+            serverDelay = (currentTime - action.atPlayerTime) / 2
             history = replaceAction(history, action)
+            // console.log('corrected history', history)
         } else {
             history = insertAction(history, action)
+            // console.log('injected history', history)
         }
     })
 
@@ -29,13 +34,14 @@ function createGameController(player, socket, serverDelay, serverOffset) {
             let currentTime = Date.now()
             action = addTimestamp(action, currentTime)
             socket.emit('action', action)
-            action.atServerTime = currentTime + serverDelay - serverOffset //estimate
+            action.atServerTime = currentTime - serverDelay + serverOffset //estimate
             const nextState = reducer(lastState(history), action)
             history.push(nextState)
+            // console.log('estimated history: ', history)
         },
 
-        currentState(currentTime) {
-            let gameTime = currentTime + serverDelay - serverOffset
+        currentState() {
+            let gameTime = Date.now() - serverDelay + serverOffset
             return tick(lastState(history), gameTime)
         }
     }
