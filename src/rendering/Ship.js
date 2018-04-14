@@ -1,6 +1,7 @@
-function createShip({ x, y }, rotation) {
+function createShip({ x, y }, direction, color) {
+    var vector = new Point(direction)
     var radius = 20;
-    var angle = rotation - 30;
+    var angle = vector.angle - 30;
 
     var circle = new Path.Circle(new Point(x, y), radius);
     var triangle = new Path.RegularPolygon(new Point(x, y), 3, radius);
@@ -15,7 +16,7 @@ function createShip({ x, y }, rotation) {
         ],
         // selected: true
     })
-    ship.strokeColor = 'cyan';
+    ship.strokeColor = color;
     ship.strokeWidth = 2;
     ship.rotate(angle);
     return ship

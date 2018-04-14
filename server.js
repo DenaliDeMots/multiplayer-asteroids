@@ -9,22 +9,26 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static('build'))
 
-let playerNumber = 1
+const players = {}
 io.on('connection', (socket) => {
     console.log('a user connected')
-    if (playerNumber <= 2) {
-
+    if (!players.player1) {
+        players.player1 = socket
+        socket.player = 'player1'
+    } else if (!players.player2) {
+        players.player2 = socket
+        socket.player = 'player2'
+    }
+    if (socket.player) {
         socket.on('initialize', (timeStamp) => {
-            // timeStamp.player = 'player' + playerNumber
-            timeStamp.player = 'player1'
+            timeStamp.player = socket.player
             timeStamp.atServerTime = Date.now()
-            // playerNumber++
             socket.emit('initialize', timeStamp)
         })
 
 
         socket.on('disconnect', () => {
-            playerNumber--
+            delete players[socket.player]
             console.log('a user disconnected')
         })
 
