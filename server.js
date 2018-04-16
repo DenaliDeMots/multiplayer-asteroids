@@ -32,12 +32,27 @@ io.on('connection', (socket) => {
             console.log('a user disconnected')
         })
 
-        socket.on('action', (action) => {
+        socket.on('action', async (action) => {
             action.atServerTime = Date.now()
             io.emit('action', action)
+
+            // await delay(5000)
+            // action.atServerTime = Date.now()
+            // await delay(5000)
+            // io.emit('action', action)
         })
     }
 })
+
+function delay(milliseconds) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve()
+        })
+    })
+}
+
+
 
 const PORT = 3000;
 http.listen(process.env.PORT || PORT, () => console.log(`Listening on PORT: ${PORT}`));

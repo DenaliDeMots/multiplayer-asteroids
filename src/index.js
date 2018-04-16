@@ -23,17 +23,39 @@ window.onload = function () {
     var tool = new paper.Tool()
 
     // createShip({ x: 400, y: 400 }, 90)
-
+    let turnDirection
     tool.onKeyDown = function (event) {
         if (gameController) {
             if (event.key === 'up') {
                 gameController.initiateAction(actions.startMoving())
             } else if (event.key === 'down') {
-                gameController.initiateAction(actions.stopMoving())
-            } else if (event.key === 'left') {
-                debugger;
-            } else if (event.key === 'right') {
 
+            } else if (event.key === 'left') {
+                turnDirection = 'left'
+                gameController.initiateAction(actions.startTurning('left'))
+            } else if (event.key === 'right') {
+                turnDirection = 'right'
+                gameController.initiateAction(actions.startTurning('right'))
+            }
+        }
+    }
+
+    tool.onKeyUp = function (event) {
+        if (gameController) {
+            if (event.key === 'up') {
+                gameController.initiateAction(actions.stopMoving())
+            } else if (event.key === 'down') {
+
+            } else if (event.key === 'left') {
+                if (turnDirection === 'left') {
+                    turnDirection = undefined
+                    gameController.initiateAction(actions.stopTurning())
+                }
+            } else if (event.key === 'right') {
+                if (turnDirection === 'right') {
+                    turnDirection = undefined
+                    gameController.initiateAction(actions.stopTurning())
+                }
             }
         }
     }

@@ -44,7 +44,9 @@ function createGameController(player, socket, serverDelay, serverOffset, startin
 
         currentState() {
             let gameTime = Date.now() - serverDelay + serverOffset
-            return tick(lastState(history), gameTime)
+            const state = lastState(history)
+            // console.log('current time: ', gameTime, 'saved time: ', state.gameTime)
+            return tick(state, gameTime)
         }
     }
 }

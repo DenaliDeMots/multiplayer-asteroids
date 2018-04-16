@@ -1,7 +1,7 @@
 const { Point } = require('paper')
 
-const playerSpeed = 0.08
-const playerRotateSpeed = 1
+const playerSpeed = 0.15
+const playerRotateSpeed = 0.5
 
 function tick(state, gameTime) {
     // console.log('time delta', gameTime - state.gameTime)
@@ -33,7 +33,8 @@ function nextPosition(startPosition, direction, speed, timeDelta) {
 }
 
 function nextDirection(startVector, turnDirection, rotateSpeed, timeDelta) {
-    const rotation = rotateSpeed * timedDelta
+    console.log('time delta: ', timeDelta)
+    const rotation = rotateSpeed * timeDelta
     startVector = toPoint(startVector)
     const nextVector = startVector.rotate(turnDirection === "right" ? rotation : -rotation)
     return fromPoint(nextVector)
